@@ -220,7 +220,7 @@ class Window(QMainWindow):
                 self.clippingRect.append(p1, p1)
 
             elif self.toolbar.pickedTool == ToolBar.TOOLS.fill:
-                oldColor = self.palette().color(self.backgroundRole()).rgb()
+                oldColor = self.getPixelColor(x, y)
                 newColor = QColor(Qt.green).rgb()
 
                 points = self.fillFn({'x': x, 'y': y}, oldColor, newColor, self.getPixelColor)
