@@ -8,6 +8,7 @@ from algorithm import dda
 from algorithm import transform2d
 from algorithm import cohen_sutherland
 from algorithm import liang_barsky
+from algorithm import flood_fill
 from data.lines import Lines
 from data.circumferences import Circumferences
 from gui.action import Action
@@ -24,6 +25,8 @@ class Window(QMainWindow):
         self.circs = Circumferences(bresenham.circumference)
         self.fillPoints = []
 
+        self.fillFn = flood_fill.flood4
+        
         # Atalho definido para a ação de fechar o programa
         exitAct = Action(qApp.quit, self)
         exitAct.setShortcut('Ctrl+Q')
@@ -141,9 +144,10 @@ class Window(QMainWindow):
         self.move(frame.topLeft())
 
 
-    def pixelColor(x, y):
+    def getPixelColor(self, x, y):
         """ Recupera a cor setada para o pixel da posição (x, y). """
-        return self.grab().toImage().pixelColor(x, y)
+        
+        return self.grab().toImage().pixelColor(x, y).rgb()
         
         
     def transform(self, tdialog):
@@ -199,24 +203,28 @@ class Window(QMainWindow):
         # Ações realizadas a partir do clique referent ao
         # botão esquerdo do mouse.
         if event.button() == Qt.LeftButton:
+            x, y = event.x(), event.y()
+            
             if self.toolbar.pickedTool == ToolBar.TOOLS.line:
-                p1 = {'x': event.pos().x(), 'y': event.pos().y()}
+                p1 = {'x': x, 'y': y}
                 self.lines.append(p1, p1)
 
             elif self.toolbar.pickedTool == ToolBar.TOOLS.circ:
-                center = {'x': event.pos().x(), 'y': event.pos().y()}
+                center = {'x': x, 'y': y}
                 self.circs.append(center, 1)
 
             elif self.toolbar.pickedTool == ToolBar.TOOLS.clip:
                 self.clippingRect.clear()
 
-                p1 = {'x': event.pos().x(), 'y': event.pos().y()}
+                p1 = {'x': x, 'y': y}
                 self.clippingRect.append(p1, p1)
 
             elif self.toolbar.pickedTool == ToolBar.TOOLS.fill:
-                x, y = event.pos().x(), event.pos().y()
-                self.fillPoints.append({'x': x, 'y': y})
-                
+                oldColor = self.palette().color(self.backgroundRole()).rgb()
+                newColor = QColor(Qt.green).rgb()
+
+                points = self.fillFn({'x': x, 'y': y}, oldColor, newColor, self.getPixelColor)
+                self.fillPoints += points
 
     def mouseMoveEvent(self, event):
         """ Definição das ações a serem realizadas a partir do evento
@@ -290,7 +298,7 @@ class Window(QMainWindow):
         painter.drawLines()
         painter.drawCircs()
 
-        color = Qt.red
+        color = Qt.green
         pen.setColor(color)
         painter.setPen(pen)
 
@@ -299,4 +307,12 @@ class Window(QMainWindow):
 
     def createPopupMenu(self):
         """ Impede que seja possível esconder a barra de ferramentas. """
+        
         return None
+
+    def setFillFn(self, fn):
+        """ Seta o algoritmo a ser usado na operação de preenchimento. """
+        
+        self.fillFn = fn
+        
+

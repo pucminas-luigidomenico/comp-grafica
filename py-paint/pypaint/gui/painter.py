@@ -1,4 +1,3 @@
-from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainter
 
 from data.lines import Lines
@@ -7,7 +6,6 @@ from algorithm import cohen_sutherland
 
 class Painter(QPainter):
     clippingFn = cohen_sutherland.clipping
-    fillFn = None
     
     def __init__(self, parent, lines, circs, clippingRect, fillPoints):
         """ Construtor da classe Painter.
@@ -54,10 +52,7 @@ class Painter(QPainter):
         na tela, a partir de um ponto inicial. """
 
         for p in self.fillPoints:
-            colors = [Qt.White]
-            newColor = Qt.Red
-            shapePoints = self.fillFn(p['x'], p['y'], colors,
-                                      newColor, parent.pixelColor)
+            self.drawPoint(p['x'], p['y'])
         
     def drawClippingArea(self):
         """ Desenha o retângulo referente a área de recorte. """
@@ -105,10 +100,5 @@ class Painter(QPainter):
                 
     def setClippingFn(fn):
         """ Seta o algoritmo a ser usado na operação de recorte. """
-        Painter.clippingFn = fn
-        
 
-    def setFillFn(fn):
-        """ Seta o algoritmo a ser usado na operação de preenchimento. """
-        Painter.fillFn = fn
-        
+        Painter.clippingFn = fn
