@@ -4,7 +4,7 @@ from enum import IntEnum
 from gui.dialog import TransformDialog
 
 class ToolBar(QToolBar):
-    TOOLS = IntEnum('tools', 'none line circ clear transform clip')
+    TOOLS = IntEnum('tools', 'none line circ clear transform clip fill')
     
     def __init__(self, parent):
         super().__init__(parent)

@@ -11,7 +11,7 @@ from algorithm import liang_barsky
 from data.lines import Lines
 from data.circumferences import Circumferences
 from gui.action import Action
-from gui.icon import lineIcon, circIcon, clearIcon, transformIcon, clipIcon
+from gui.icon import lineIcon, circIcon, clearIcon, transformIcon, clipIcon, fillIcon
 from gui.toolbar import ToolBar
 from gui.painter import Painter
 
@@ -22,12 +22,13 @@ class Window(QMainWindow):
         self.toolButtons = {}
         self.lines = Lines(bresenham.line)
         self.circs = Circumferences(bresenham.circumference)
+        self.fillPoints = []
 
         # Atalho definido para a ação de fechar o programa
         exitAct = Action(qApp.quit, self)
         exitAct.setShortcut('Ctrl+Q')
         self.addAction(exitAct)
-        
+
         self.initUI()
 
         # Definição da área inicial de recorte
@@ -108,6 +109,10 @@ class Window(QMainWindow):
                         group, "Circunferência", True, circIcon())
         self.toolbar.addAction(action, ToolBar.TOOLS.circ)
 
+        action = Action(lambda: self.toolbar.chooseAction(ToolBar.TOOLS.fill),
+                        group, "Preenchimento", True, fillIcon())
+        self.toolbar.addAction(action, ToolBar.TOOLS.fill)
+        
         action = Action(lambda: self.toolbar.chooseAction(ToolBar.TOOLS.clip),
                         group, "Recorte", True, clipIcon())
         self.toolbar.addAction(action, ToolBar.TOOLS.clip)
@@ -136,6 +141,11 @@ class Window(QMainWindow):
         self.move(frame.topLeft())
 
 
+    def pixelColor(x, y):
+        """ Recupera a cor setada para o pixel da posição (x, y). """
+        return self.grab().toImage().pixelColor(x, y)
+        
+        
     def transform(self, tdialog):
         """ Realiza as devidas transformações 2D, selecionadas
         pelo usuário.
@@ -202,6 +212,10 @@ class Window(QMainWindow):
 
                 p1 = {'x': event.pos().x(), 'y': event.pos().y()}
                 self.clippingRect.append(p1, p1)
+
+            elif self.toolbar.pickedTool == ToolBar.TOOLS.fill:
+                x, y = event.pos().x(), event.pos().y()
+                self.fillPoints.append({'x': x, 'y': y})
                 
 
     def mouseMoveEvent(self, event):
@@ -239,7 +253,6 @@ class Window(QMainWindow):
                 
             self.clippingRect.update(0, p1, p2)
             
-            
         self.update()
 
         
@@ -261,10 +274,11 @@ class Window(QMainWindow):
         - Desenho de circunferências.
         - Redefinição da janela de recorte.
         """
-
-        color = Qt.black
+        
+        color = Qt.black            
         pen = QPen(color, 3)
-        painter = Painter(self, self.lines, self.circs, self.clippingRect)
+        painter = Painter(self, self.lines, self.circs,
+                          self.clippingRect, self.fillPoints)
         painter.setPen(pen)
 
         painter.drawClippingArea()
@@ -275,6 +289,12 @@ class Window(QMainWindow):
 
         painter.drawLines()
         painter.drawCircs()
+
+        color = Qt.red
+        pen.setColor(color)
+        painter.setPen(pen)
+
+        painter.fillShapes()
 
 
     def createPopupMenu(self):
