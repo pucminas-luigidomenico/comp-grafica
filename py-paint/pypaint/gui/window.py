@@ -9,6 +9,7 @@ from algorithm import transform2d
 from algorithm import cohen_sutherland
 from algorithm import liang_barsky
 from algorithm import flood_fill
+from algorithm import boundary_fill
 from data.lines import Lines
 from data.circumferences import Circumferences
 from gui.action import Action
@@ -92,6 +93,23 @@ class Window(QMainWindow):
                         group, 'Liang-Barsky', True)
         submenu.addAction(action)
 
+        # Submenu referente aos algoritmos relacionados
+        # a preenchimento de área.
+        submenu = menu.addMenu('Preenchimento')
+
+        group = QActionGroup(submenu)
+
+        action = Action(lambda: self.setFillFn(flood_fill.flood4),
+                        group, 'Flood-Fill', True)
+        action.setChecked(True)        
+        submenu.addAction(action)
+
+        
+        action = Action(lambda: self.setFillFn(boundary_fill.boundary4),
+                        group, 'Boundary-Fill', True)
+        submenu.addAction(action)
+
+        
     def createToolBar(self):
         """ Cria o menu de ferramentas lateral, adicionando
         as devidas ferramentas.
@@ -220,10 +238,15 @@ class Window(QMainWindow):
                 self.clippingRect.append(p1, p1)
 
             elif self.toolbar.pickedTool == ToolBar.TOOLS.fill:
-                oldColor = self.getPixelColor(x, y)
                 newColor = QColor(Qt.green).rgb()
 
-                points = self.fillFn({'x': x, 'y': y}, oldColor, newColor, self.getPixelColor)
+                if self.fillFn == boundary_fill.boundary4:
+                    border = QColor(Qt.blue).rgb()
+                    points = self.fillFn({'x': x, 'y': y}, border, newColor, self.getPixelColor)
+                else:
+                    oldColor = self.getPixelColor(x, y)
+                    points = self.fillFn({'x': x, 'y': y}, oldColor, newColor, self.getPixelColor)
+                    
                 self.fillPoints += points
 
     def mouseMoveEvent(self, event):
