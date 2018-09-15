@@ -2,7 +2,7 @@
 Esse projeto faz parte de um repositório referente a todos os trabalhos da disciplina de Computação Gráfica e, por isso, para utilizá-lo será necessário baixar todo o repositório, incluindo possíveis futuros trabalhos distintos.
 
 ## Instalação & Execução
-### Ubuntu 16.04
+### Ubuntu
 - Instale o gerenciador de pacotes PIP:
 
   ```
@@ -22,7 +22,7 @@ Esse projeto faz parte de um repositório referente a todos os trabalhos da disc
 
   ```
   $ cd caminho/para/repositório/py-paint
-  $ sudo -H pip3 install -e .
+  $ sudo pip3 install -e .
   ```
  
 - Uma vez dentro da pasta raíz do projeto, o execute:
@@ -31,6 +31,43 @@ Esse projeto faz parte de um repositório referente a todos os trabalhos da disc
   $ python3 pypaint
   ```
   
+### Windows 10
+- Instale o gerenciador de pacotes Chocolatey. Para isso, siga as instruções do link: https://chocolatey.org/install
+
+- Pelo CMD ou Powershell (ambos como administrador), baixe o repositório zipado ou clone o projeto utilizando o git (o caminho padrão, quando omitido, é .\comp-grafica):
+
+  ```
+  $ choco install git
+  $ git clone https://github.com/pucminas-luigidomenico/comp-grafica.git [caminho/para/repositorio]
+  ```
+  
+- Instale a versão 3 do Python:
+
+  ```
+  $ choco install python
+  ```
+
+- Feche e reabra o CMD/Powershell (como administrador) para garantir que as variáveis de ambiente estejam atualizadas
+
+- Atualize o gerenciador de pacotes PIP:
+
+  ```
+  $ python -m pip install pip --upgrade
+  ```
+  
+- Navegue até a pasta raíz do projeto e instale as dependências necessárias para a execução do programa (numpy, pyqt5):
+
+  ```
+  $ cd caminho\para\repositório\py-paint
+  $ pip install -e .
+  ```
+  
+  - Uma vez dentro da pasta raíz do projeto, o execute:
+
+  ```
+  $ python .\pypaint
+  ```
+
 ## Utilização
 - Menu superior (Algoritmos):
   - Retas: selecione o algoritmo a ser usado na rasterização de retas (Bresenham ou DDA)
