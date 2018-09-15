@@ -40,5 +40,6 @@ class ToolBar(QToolBar):
         
         self.parent.lines.clear()
         self.parent.circs.clear()
+        self.parent.fillPoints = []
         self.parent.update()
         
