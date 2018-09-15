@@ -2,7 +2,7 @@
 Esse projeto faz parte de um repositório referente a todos os trabalhos da disciplina de Computação Gráfica e, por isso, para utilizá-lo será necessário baixar todo o repositório, incluindo possíveis futuros trabalhos distintos.
 
 ## Instalação & Execução
-### Ubuntu
+### Ubuntu 16.04
 - Instale o gerenciador de pacotes PIP:
 
   ```
@@ -18,16 +18,11 @@ Esse projeto faz parte de um repositório referente a todos os trabalhos da disc
   $ git clone https://github.com/pucminas-luigidomenico/comp-grafica.git [caminho/para/repositorio]
   ``` 
   
-- Instale as dependências necessárias para a execução do programa (numpy, pyqt5):
+- Navegue até a pasta raíz do projeto e instale as dependências necessárias para a execução do programa (numpy, pyqt5):
 
   ```
-  $ sudo -H pip3 install numpy pyqt5
-  ```
-  
-- Pelo terminal, navegue até a pasta py-paint:
-
-  ```
-  $ cd caminho/para/repositorio/py-paint
+  $ cd caminho/para/repositório/py-paint
+  $ sudo -H pip3 install -e .
   ```
  
 - Uma vez dentro da pasta raíz do projeto, o execute:
