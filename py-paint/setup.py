@@ -6,10 +6,7 @@ setup(
     author='Luigi D. C. Soares',
     packages=find_packages(),
     install_requires=[
-        'PyQt5',
+        'pyqt5',
         'numpy',
     ],
-    hiddenimports=[
-        'PyQt5.sip',
-    ]
 )
