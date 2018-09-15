@@ -1,4 +1,4 @@
-from core.core import init
+from core import init
 
 if __name__ == '__main__':
     init()
