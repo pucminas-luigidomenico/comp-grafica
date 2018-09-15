@@ -62,7 +62,7 @@ Esse projeto faz parte de um repositório referente a todos os trabalhos da disc
   $ pip install -e .
   ```
   
-  - Uma vez dentro da pasta raíz do projeto, o execute:
+- Uma vez dentro da pasta raíz do projeto, o execute:
 
   ```
   $ python .\pypaint
