@@ -12,6 +12,9 @@ def flood4(init, oldColor, newColor, getColor):
     
     stack = [init]
     points = []
+
+    # Dicionário onde a chave é uma string composta por x e y,
+    # que armazena a cor de um ponto já analisado.
     helper = {}
 
     while stack:
@@ -23,7 +26,7 @@ def flood4(init, oldColor, newColor, getColor):
             currentColor = helper[key]
         else:
             currentColor = getColor(x, y)
-            helper[key] = None
+            helper[key] = currentColor
 
         if currentColor == oldColor:
             helper[key] = newColor

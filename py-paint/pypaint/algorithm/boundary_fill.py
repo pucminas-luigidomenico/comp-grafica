@@ -12,6 +12,9 @@ def boundary4(init, border, newColor, getColor):
     
     stack = [init]
     points = []
+
+    # Dicionário onde a chave é uma string composta por x e y,
+    # que armazena a cor de um ponto já analisado.
     helper = {}
 
     while stack:
@@ -23,7 +26,7 @@ def boundary4(init, border, newColor, getColor):
             currentColor = helper[key]
         else:
             currentColor = getColor(x, y)
-            helper[key] = None
+            helper[key] = currentColor
 
         if currentColor != border and currentColor != newColor:
             helper[key] = newColor

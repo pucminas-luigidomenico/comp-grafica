@@ -242,10 +242,12 @@ class Window(QMainWindow):
 
                 if self.fillFn == boundary_fill.boundary4:
                     border = QColor(Qt.blue).rgb()
-                    points = self.fillFn({'x': x, 'y': y}, border, newColor, self.getPixelColor)
+                    points = self.fillFn({'x': x, 'y': y}, border,
+                                         newColor, 3, self.getPixelColor)
                 else:
                     oldColor = self.getPixelColor(x, y)
-                    points = self.fillFn({'x': x, 'y': y}, oldColor, newColor, self.getPixelColor)
+                    points = self.fillFn({'x': x, 'y': y}, oldColor,
+                                         newColor, self.getPixelColor)
                     
                 self.fillPoints += points
 
@@ -306,7 +308,7 @@ class Window(QMainWindow):
         - Redefinição da janela de recorte.
         """
         
-        color = Qt.black            
+        color = Qt.black
         pen = QPen(color, 3)
         painter = Painter(self, self.lines, self.circs,
                           self.clippingRect, self.fillPoints)
