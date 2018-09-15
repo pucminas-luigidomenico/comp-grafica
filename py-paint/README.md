@@ -34,7 +34,7 @@ Esse projeto faz parte de um repositório referente a todos os trabalhos da disc
 ### Windows 10
 - Instale o gerenciador de pacotes Chocolatey. Para isso, siga as instruções do link: https://chocolatey.org/install
 
-- Pelo CMD ou Powershell (ambos como administrador), baixe o repositório zipado ou clone o projeto utilizando o git (o caminho padrão, quando omitido, é .\comp-grafica):
+- Baixe o repositório zipado ou, pelo CMD ou Powershell (ambos como administrador), clone o projeto utilizando o git (o caminho padrão, quando omitido, é .\comp-grafica):
 
   ```
   $ choco install git
