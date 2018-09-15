@@ -243,7 +243,7 @@ class Window(QMainWindow):
                 if self.fillFn == boundary_fill.boundary4:
                     border = QColor(Qt.blue).rgb()
                     points = self.fillFn({'x': x, 'y': y}, border,
-                                         newColor, 3, self.getPixelColor)
+                                         newColor, self.getPixelColor)
                 else:
                     oldColor = self.getPixelColor(x, y)
                     points = self.fillFn({'x': x, 'y': y}, oldColor,
