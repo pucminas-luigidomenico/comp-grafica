@@ -6,7 +6,7 @@ setup(
     author='Luigi D. C. Soares',
     packages=find_packages(),
     install_requires=[
-        'pyqt5==5.9',
+        'pyqt5',
         'numpy',
     ],
 )
