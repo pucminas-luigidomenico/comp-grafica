@@ -9,4 +9,7 @@ setup(
         'PyQt5',
         'numpy',
     ],
+    hiddenimports=[
+        'PyQt5.sip',
+    ]
 )
