@@ -24,6 +24,12 @@ Esse projeto faz parte de um repositório referente a todos os trabalhos da disc
   $ cd caminho/para/repositório/py-paint
   $ sudo pip3 install -e .
   ```
+  
+- OBS: Em caso de erros relacionados a biblioteca tkinter, proceda da seguinte forma:
+
+  ```
+  $ sudo apt install python3-tk
+  ```
  
 - Uma vez dentro da pasta raíz do projeto, o execute:
 
