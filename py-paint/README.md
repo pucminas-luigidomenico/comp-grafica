@@ -24,6 +24,12 @@ Esse projeto faz parte de um repositório referente a todos os trabalhos da disc
   $ cd caminho/para/repositório/py-paint
   $ sudo pip3 install -e .
   ```
+  
+- OBS: Em caso de erros relacionados a biblioteca tkinter, proceda da seguinte forma:
+
+  ```
+  $ sudo apt install python3-tk
+  ```
  
 - Uma vez dentro da pasta raíz do projeto, o execute:
 
@@ -92,6 +98,7 @@ Esse projeto faz parte de um repositório referente a todos os trabalhos da disc
     - `<cohen_sutherland.py>` (Recorte 2D para retas)
     - `<liang_barsky.py>` (Recorte 2D para retas)
     - `<transform2d.py>` (Translação, escala, rotação, reflexão e cisalhamento, além de funções auxiliares)
+    - `<bezier.py>` (Curva de Bézier, além de funções auxiliares)
   - data:
     - `<circumferences.py>` (Contém uma classe auxiliar para armazenas todas as circunferências)
     - `<lines.py>` (Contém uma classe auxiliar para armazenas todas as retas)
