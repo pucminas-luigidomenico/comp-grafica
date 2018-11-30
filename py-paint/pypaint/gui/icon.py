@@ -10,6 +10,7 @@ CLEAR_ICON = 'clear_icon.png'
 TRANSFORM_ICON = 'transform_icon.png'
 CLIP_ICON = 'clip_icon.png'
 FILL_ICON = 'fill_icon.png'
+BEZIER_ICON = 'bezier_icon.png'
 
 def lineIcon():
     """ Retorna o ícone referente a ferramenta de desenho de retas. """
@@ -40,7 +41,14 @@ def clipIcon():
     
     return QIcon(PATH + CLIP_ICON)
 
+
 def fillIcon():
     """ Retorna o ícone referente a ferramenta de preenchimento. """
     
     return QIcon(PATH + FILL_ICON) 
+
+
+def bezierIcon():
+    """ Retorna o ícone referente a ferramenta de curva de bezier. """
+    
+    return QIcon(PATH + BEZIER_ICON) 

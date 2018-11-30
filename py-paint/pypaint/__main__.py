@@ -1,11 +1,11 @@
 import sys
 
 from PyQt5.QtWidgets import QApplication
-from gui.window import Window 
+from gui.main_window import MainWindow 
 
 if __name__ == '__main__':
     """ Inicializa a aplicação, criando a janela principal. """
     
     app = QApplication(sys.argv)
-    w = Window()
+    w = MainWindow()
     sys.exit(app.exec_())

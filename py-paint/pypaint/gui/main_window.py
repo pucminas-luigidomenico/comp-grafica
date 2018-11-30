@@ -1,23 +1,21 @@
 from math import sqrt
-from PyQt5.QtWidgets import qApp, QDesktopWidget, QMainWindow, QActionGroup
+from PyQt5.QtWidgets import (qApp, QDesktopWidget, QMainWindow, QActionGroup)
 from PyQt5.QtGui import QColor, QPainter, QPen
 from PyQt5.QtCore import Qt
 
-from algorithm import bresenham
-from algorithm import dda
-from algorithm import transform2d
-from algorithm import cohen_sutherland
-from algorithm import liang_barsky
-from algorithm import flood_fill
-from algorithm import boundary_fill
+from algorithm import (bresenham, dda, transform2d,
+                       cohen_sutherland, liang_barsky,
+                       flood_fill, boundary_fill,
+                       bezier)
 from data.lines import Lines
 from data.circumferences import Circumferences
 from gui.action import Action
-from gui.icon import lineIcon, circIcon, clearIcon, transformIcon, clipIcon, fillIcon
+from gui.icon import (lineIcon, circIcon, clearIcon, transformIcon,
+                      clipIcon, fillIcon, bezierIcon)
 from gui.toolbar import ToolBar
 from gui.painter import Painter
 
-class Window(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -25,6 +23,10 @@ class Window(QMainWindow):
         self.lines = Lines(bresenham.line)
         self.circs = Circumferences(bresenham.circumference)
         self.fillPoints = []
+        self.bezierControl = []
+        self.printBezierControl = []
+        self.bezierPoints = []
+        self.bezierOk = False
 
         self.fillFn = flood_fill.flood4
         
@@ -117,7 +119,7 @@ class Window(QMainWindow):
         
         self.toolbar = ToolBar(self)
         self.toolbar.setMovable(False)
-
+        
         # Agrupamento de ações que apresentam como característica
         # o fato de permanecerem marcadas, para serem usadas de forma
         # contínua.
@@ -126,6 +128,10 @@ class Window(QMainWindow):
                         group, "Linha", True, lineIcon())
         self.toolbar.addAction(action, ToolBar.TOOLS.line)
 
+        action = Action(lambda: self.toolbar.showBezierDialog(),
+                        group, "Bézier", True, bezierIcon())
+        self.toolbar.addAction(action, ToolBar.TOOLS.bezier)
+        
         action = Action(lambda: self.toolbar.chooseAction(ToolBar.TOOLS.circ),
                         group, "Circunferência", True, circIcon())
         self.toolbar.addAction(action, ToolBar.TOOLS.circ)
@@ -167,7 +173,19 @@ class Window(QMainWindow):
         
         return self.grab().toImage().pixelColor(x, y).rgb()
         
+
+    def startBezier(self, n, ok):
+        """ Inicializa a ferramente bezier com a quantidade de pontos
+        de controle a ser utilizada. 
+        """
+
+        if ok:
+            if self.bezierControl:
+                self.bezierControl = []
+            
+            self.bezierN = n
         
+    
     def transform(self, tdialog):
         """ Realiza as devidas transformações 2D, selecionadas
         pelo usuário.
@@ -222,8 +240,23 @@ class Window(QMainWindow):
         # botão esquerdo do mouse.
         if event.button() == Qt.LeftButton:
             x, y = event.x(), event.y()
-            
-            if self.toolbar.pickedTool == ToolBar.TOOLS.line:
+
+            if self.toolbar.pickedTool == ToolBar.TOOLS.bezier:
+                if not self.bezierControl:
+                    self.bezierOk = False
+                    self.bezierControl = []
+
+                self.bezierControl.append((x, y))
+                self.printBezierControl = [p for p in self.bezierControl]
+                
+                if len(self.bezierControl) == self.bezierN:
+                    self.bezierPoints = bezier.bezier(self.bezierControl)
+                    self.bezierControl = []
+                    self.bezierOk = True
+
+                self.update()
+                
+            elif self.toolbar.pickedTool == ToolBar.TOOLS.line:
                 p1 = {'x': x, 'y': y}
                 self.lines.append(p1, p1)
 
@@ -307,19 +340,35 @@ class Window(QMainWindow):
         - Desenho de circunferências.
         - Redefinição da janela de recorte.
         """
-        
+
         color = Qt.black
-        pen = QPen(color, 3)
+        pen = QPen(color)
+        pen.setWidth(3)
         painter = Painter(self, self.lines, self.circs,
                           self.clippingRect, self.fillPoints)
         painter.setPen(pen)
 
+        pen.setColor(color)
         painter.drawClippingArea()
+
+        color = Qt.magenta
+        pen.setWidth(9)
+        pen.setColor(color)
+        painter.setPen(pen)
+        painter.drawBezierControl(self.printBezierControl)
+
+        color = Qt.darkGreen
+        pen.setColor(color)
+        pen.setWidth(3)
+        painter.setPen(pen)
         
+        if self.bezierOk:
+            painter.drawBezier(self.bezierPoints)
+
         color = Qt.blue
         pen.setColor(color)
         painter.setPen(pen)
-
+                            
         painter.drawLines()
         painter.drawCircs()
 
@@ -335,6 +384,7 @@ class Window(QMainWindow):
         
         return None
 
+        
     def setFillFn(self, fn):
         """ Seta o algoritmo a ser usado na operação de preenchimento. """
         

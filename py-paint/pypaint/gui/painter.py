@@ -97,6 +97,20 @@ class Painter(QPainter):
             for point in self.circs.fn(center, p):
                 self.drawPoint(point['x'], point['y'])
 
+
+    def drawBezierControl(self, control):
+        """ Desenha os pontos de controle da curva de bezier. """
+
+        for x, y in control:
+            self.drawPoint(x, y)
+
+            
+    def drawBezier(self, curve):
+        """ Desenha a curva de bezier. """
+
+        for x, y in curve:
+            self.drawPoint(x, y)
+            
                 
     def setClippingFn(fn):
         """ Seta o algoritmo a ser usado na operação de recorte. """
