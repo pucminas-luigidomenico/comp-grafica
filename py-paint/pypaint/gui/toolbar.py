@@ -57,5 +57,9 @@ class ToolBar(QToolBar):
         self.parent.lines.clear()
         self.parent.circs.clear()
         self.parent.fillPoints = []
+        self.parent.bezierControl = []
+        self.parent.printBezierControl = []
+        self.parent.bezierPoints = []
+        self.parent.bezierOk = False
         self.parent.update()
         
